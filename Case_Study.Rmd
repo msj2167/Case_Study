@@ -1,0 +1,68 @@
+---
+title: "Case_Study"
+output: github_document
+date: "2026-10-13"
+---
+
+```{r}
+library(p8105.datasets)
+library(tidyverse)
+data("nyc_airbnb")
+```
+
+# Some questions
+
+* Where are the most expensive airbnbs in nyc?
+* Which neighbourhood has the highest concentration?  
+* Which one is the cheapest? 
+* Which airbnb hosts are the most/best reviewed? 
+* Has the number increased or decreased over time? 
+* Do airbnbs affect rent in their neighbourhood/ buildings?
+* Do descriptions correlate with price? 
+
+```{r}
+nyc_airbnb = 
+  nyc_airbnb |>
+  mutate(stars = review_scores_location/2)
+
+```
+
+```{r}
+nyc_airbnb |>
+  count(room_type, neighbourhood_group) |>
+  pivot_wider(
+    names_from = room_type,
+    values_from = n
+  )
+```
+
+## Price 
+
+```{r}
+nyc_airbnb |>
+  group_by(neighbourhood_group) |>
+  mutate(price_rank )
+```
+
+```{r}
+nyc_airbnb |> 
+  mutate(price_rank = min_rank(desc((price)))) |> 
+  filter(price_rank < 10) |> view()
+```
+
+
+```{r}
+nyc_airbnb |>
+  filter(price < )
+
+```
+
+```{r}
+nyc_airbnb |>
+  filter(neighbourhood_group == "Manhattan") |>
+  filter (price < 500) |>
+  ggplot(aes(x = neighbourhood, y = price)) +
+  geom_boxplot() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+
